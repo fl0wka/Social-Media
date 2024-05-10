@@ -72,3 +72,67 @@ export const deleteUser = async (req, res) => {
 }
 
 // Follow a User
+export const followUser = async (req, res) => {
+	const id = req.params.id
+
+	const { currentUserId } = req.body
+
+	// Проверка того, что пользователь не подписывает сам на себя
+	if (currentUserId === id) {
+		res.status(403).json('Action forbidden')
+	}
+
+	try {
+		// User на которого подписываемся
+		const followUser = await UserModel.findById(id)
+		// User который подписан на тебя
+		const followingUser = await UserModel.findById(currentUserId)
+
+		// Проверка существования нашей подписки на этого User'а в его массиве подписавшихся
+		if (!followUser.followers.includes(currentUserId)) {
+			// Добавление в массив MongoDB осуществляется методом $push
+			// Добавление id текущего User'а в массив того, на кого подписываешься
+			await followUser.updateOne({ $push: { followers: currentUserId } })
+			// Добавление к себе в массив id user'а, на которого подписываешься
+			await followingUser.updateOne({ $push: { following: id } })
+			res.status(200).json('User followed')
+		} else {
+			res.status(403).json('User is already followed by you')
+		}
+	} catch (error) {
+		res.status(500).json({ message: error.message })
+	}
+}
+
+// UnFollow a User
+export const unFollowUser = async (req, res) => {
+	const id = req.params.id
+
+	const { currentUserId } = req.body
+
+	// Проверка того, что пользователь не пытается отписываться сам от себя
+	if (currentUserId === id) {
+		res.status(403).json('Action forbidden')
+	}
+
+	try {
+		// User на которого подписались
+		const followUser = await UserModel.findById(id)
+		// User который подписан на тебя
+		const followingUser = await UserModel.findById(currentUserId)
+
+		// Проверка существования нашей подписки на этого User'а в его массиве подписавшихся
+		if (followUser.followers.includes(currentUserId)) {
+			// Удаление из массив MongoDB осуществляется методом $pull
+			// Удаление id текущего User'а из массив того, на кого подписались
+			await followUser.updateOne({ $pull: { followers: currentUserId } })
+			// Удаление из своего массива id user'а, на которого подписались
+			await followingUser.updateOne({ $pull: { following: id } })
+			res.status(200).json('User unfollowed')
+		} else {
+			res.status(403).json('User is not followed by you')
+		}
+	} catch (error) {
+		res.status(500).json({ message: error.message })
+	}
+}
