@@ -5,6 +5,7 @@ import bodyParser from 'body-parser'
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 import AuthRouter from './Routes/AuthRoute.js'
+import UserRouter from './Routes/UserRoute.js'
 
 // Routes
 
@@ -28,3 +29,4 @@ mongoose
 
 // Usage of routes
 app.use('/auth', AuthRouter)
+app.use('/user', UserRouter)
