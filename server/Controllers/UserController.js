@@ -67,7 +67,7 @@ export const deleteUser = async (req, res) => {
 			res.status(500).json({ message: error.message })
 		}
 	} else {
-		req.status(403).json('Access Denied! You can only deleted your own profile')
+		res.status(403).json('Access Denied! You can only deleted your own profile')
 	}
 }
 
@@ -77,7 +77,7 @@ export const followUser = async (req, res) => {
 
 	const { currentUserId } = req.body
 
-	// Проверка того, что пользователь не подписывает сам на себя
+	// Проверка того, что пользователь не подписывается сам на себя
 	if (currentUserId === id) {
 		res.status(403).json('Action forbidden')
 	}
