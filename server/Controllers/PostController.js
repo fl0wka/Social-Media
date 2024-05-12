@@ -1,6 +1,6 @@
-import PostModel from '../Models/postModel.js'
-import UserModel from '../Models/userModel.js'
-import mongoose from 'mongoose'
+import PostModel from "../Models/postModel.js"
+import UserModel from "../Models/userModel.js"
+import mongoose from "mongoose"
 
 // Create new Post
 export const createPost = async (req, res) => {
@@ -8,7 +8,7 @@ export const createPost = async (req, res) => {
 
 	try {
 		await newPost.save()
-		res.status(200).json('Post created')
+		res.status(200).json("Post created")
 	} catch (error) {
 		res.status(500).json({ message: error.message })
 	}
@@ -24,7 +24,7 @@ export const getPost = async (req, res) => {
 		if (post) {
 			res.status(200).json(post)
 		} else {
-			res.status(404).json('Post not found')
+			res.status(404).json("Post not found")
 		}
 	} catch (error) {
 		res.status(500).json({ message: error.message })
@@ -42,9 +42,9 @@ export const updatePost = async (req, res) => {
 		if (post.userId === userId) {
 			// Обновление поля в MongoDB осуществляется $set
 			await post.updateOne({ $set: req.body })
-			res.status(200).json('Post updated')
+			res.status(200).json("Post updated")
 		} else {
-			res.status(403).json('Action forbidden')
+			res.status(403).json("Action forbidden")
 		}
 	} catch (error) {
 		res.status(500).json({ message: error.message })
@@ -61,9 +61,9 @@ export const deletePost = async (req, res) => {
 
 		if (post.userId === userId) {
 			await post.deleteOne()
-			res.status(200).json('Post deleted successfully')
+			res.status(200).json("Post deleted successfully")
 		} else {
-			res.status(403).json('Action forbidden')
+			res.status(403).json("Action forbidden")
 		}
 	} catch (error) {
 		res.status(500).json({ message: error.message })
@@ -81,10 +81,10 @@ export const likePost = async (req, res) => {
 		// Проверяем пост на наличие нашего лайка в нем и совершаем соответствующие действия
 		if (!post.likes.includes(userId)) {
 			await post.updateOne({ $push: { likes: userId } })
-			res.status(200).json('Post liked')
+			res.status(200).json("Post liked")
 		} else {
 			await post.updateOne({ $pull: { likes: userId } })
-			res.status(200).json('Post unliked')
+			res.status(200).json("Post unliked")
 		}
 	} catch (error) {
 		res.status(500).json({ message: error.message })
@@ -113,14 +113,14 @@ export const getTimeLinePosts = async (req, res) => {
 				// В данном шаге, находясь в UserModel, мы совершаем поиск по PostModel
 				$lookup: {
 					// Указываем название папки/коллекции из БД, по которой хотим совершить поиск
-					from: 'posts',
+					from: "posts",
 					/* 
 						Здесь указываем поле, которое мы хотим интегрировать с другой моделью. Т.е. following относится к UserModel (коллекция users в БД). Его значения мы используем для поиска. Указав userId в foreignField, мы говорим о том, что взятое значение из following (коллекция users) будет использоваться для поиска в PostModel (коллекция posts в БД) по ключу userId.
 					*/
-					localField: 'following',
-					foreignField: 'userId',
+					localField: "following",
+					foreignField: "userId",
 					// Далее мы указываем, в виде какого объекта мы хотим получить результат
-					as: 'followingPosts',
+					as: "followingPosts",
 				},
 			},
 			{

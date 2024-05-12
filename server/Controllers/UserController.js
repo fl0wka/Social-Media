@@ -1,5 +1,5 @@
-import UserModel from '../Models/userModel.js'
-import bcrypt from 'bcrypt'
+import UserModel from "../Models/userModel.js"
+import bcrypt from "bcrypt"
 
 // Get a User
 export const getUser = async (req, res) => {
@@ -17,7 +17,7 @@ export const getUser = async (req, res) => {
 
 			res.status(200).json(otherDetails)
 		} else {
-			res.status(404).json('not such user exist')
+			res.status(404).json("not such user exist")
 		}
 	} catch (error) {
 		res.status(500).json({ message: error.message })
@@ -49,7 +49,7 @@ export const updateUser = async (req, res) => {
 			res.status(500).json({ message: error.message })
 		}
 	} else {
-		res.status(403).json('Access Denied! You can only update your own profile')
+		res.status(403).json("Access Denied! You can only update your own profile")
 	}
 }
 
@@ -62,12 +62,12 @@ export const deleteUser = async (req, res) => {
 	if (currentUserId === id || currentUserAdminStatus) {
 		try {
 			await UserModel.findByIdAndDelete(id)
-			res.status(200).json('User deleted successfully')
+			res.status(200).json("User deleted successfully")
 		} catch (error) {
 			res.status(500).json({ message: error.message })
 		}
 	} else {
-		res.status(403).json('Access Denied! You can only deleted your own profile')
+		res.status(403).json("Access Denied! You can only deleted your own profile")
 	}
 }
 
@@ -79,7 +79,7 @@ export const followUser = async (req, res) => {
 
 	// Проверка того, что пользователь не подписывается сам на себя
 	if (currentUserId === id) {
-		res.status(403).json('Action forbidden')
+		res.status(403).json("Action forbidden")
 	}
 
 	try {
@@ -95,9 +95,9 @@ export const followUser = async (req, res) => {
 			await followUser.updateOne({ $push: { followers: currentUserId } })
 			// Добавление к себе в массив id user'а, на которого подписываешься
 			await followingUser.updateOne({ $push: { following: id } })
-			res.status(200).json('User followed')
+			res.status(200).json("User followed")
 		} else {
-			res.status(403).json('User is already followed by you')
+			res.status(403).json("User is already followed by you")
 		}
 	} catch (error) {
 		res.status(500).json({ message: error.message })
@@ -112,7 +112,7 @@ export const unFollowUser = async (req, res) => {
 
 	// Проверка того, что пользователь не пытается отписываться сам от себя
 	if (currentUserId === id) {
-		res.status(403).json('Action forbidden')
+		res.status(403).json("Action forbidden")
 	}
 
 	try {
@@ -128,9 +128,9 @@ export const unFollowUser = async (req, res) => {
 			await followUser.updateOne({ $pull: { followers: currentUserId } })
 			// Удаление из своего массива id user'а, на которого подписались
 			await followingUser.updateOne({ $pull: { following: id } })
-			res.status(200).json('User unfollowed')
+			res.status(200).json("User unfollowed")
 		} else {
-			res.status(403).json('User is not followed by you')
+			res.status(403).json("User is not followed by you")
 		}
 	} catch (error) {
 		res.status(500).json({ message: error.message })
