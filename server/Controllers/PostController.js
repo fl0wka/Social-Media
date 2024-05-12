@@ -116,8 +116,11 @@ export const getTimeLinePosts = async (req, res) => {
 					from: 'posts',
 					/* 
 						Здесь указываем поле, которое мы хотим интегрировать с другой моделью.
-						Т.е. following относится к UserModel (коллекция users в БД). Его значения мы используем для поиска.
-						Указав userId в foreignField, мы говорим о том, что взятое значение из following (коллекция users) будет использоваться для поиска в PostModel (коллекция posts в БД) по ключу userId.
+						Т.е. following относится к UserModel (коллекция users в БД). 
+						Его значения мы используем для поиска.
+						Указав userId в foreignField, мы говорим о том, 
+						что взятое значение из following (коллекция users) 
+						будет использоваться для поиска в PostModel (коллекция posts в БД) по ключу userId.
 					*/
 					localField: 'following',
 					foreignField: 'userId',
