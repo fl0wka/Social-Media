@@ -13,3 +13,36 @@
 	--location: #ef5757;
 	--shedule: #e1ae4a;
 }
+
+body {
+	font-family: "Inter", sans-serif;
+	margin: 0;
+}
+
+.App {
+	overflow: hidden;
+	color: var(--black);
+	background: #f3f3f3;
+	padding: 1rem 1rem;
+}
+
+.blur {
+	position: absolute;
+	width: 22rem;
+	height: 14rem;
+	border-radius: 50%;
+	background: #a6ddf0;
+	filter: blur(72px);
+}
+
+/* <uniquifier>: Use a unique and descriptive class name */
+/* <weight>: Use a value from 100 to 900 */
+/* <slant>: Use a value from -10 to 0 */
+
+/* .inter-regular {
+	font-family: "Inter", sans-serif;
+	font-optical-sizing: auto;
+	font-weight: 400;
+	font-style: normal;
+	font-variation-settings: "slnt" 0;
+} */
