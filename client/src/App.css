@@ -35,6 +35,24 @@ body {
 	filter: blur(72px);
 }
 
+.button {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: white;
+	border: none;
+	border-radius: 0.5rem;
+	background: var(--buttonBg);
+	transition: all 100ms ease-out;
+}
+
+.button:hover {
+	cursor: pointer;
+	color: var(--orange);
+	background: transparent;
+	border: 2px solid var(--orange);
+}
+
 /* <uniquifier>: Use a unique and descriptive class name */
 /* <weight>: Use a value from 100 to 900 */
 /* <slant>: Use a value from -10 to 0 */
