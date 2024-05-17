@@ -53,6 +53,10 @@ body {
 	border: 2px solid var(--orange);
 }
 
+::-webkit-scrollbar {
+	display: none;
+}
+
 /* <uniquifier>: Use a unique and descriptive class name */
 /* <weight>: Use a value from 100 to 900 */
 /* <slant>: Use a value from -10 to 0 */
