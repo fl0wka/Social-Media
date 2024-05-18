@@ -1,0 +1,31 @@
+.a-left {
+	gap: 2rem;
+}
+
+.a-left > img {
+	width: 4rem;
+	height: 4rem;
+}
+
+.Webname > h1 {
+	font-size: 3rem;
+	background-color: red;
+
+	/* Создание градиента */
+	background-image: var(--buttonBg);
+
+	/* Установка размера фона и свойства повтора */
+	background-size: 100%;
+	background-repeat: repeat;
+
+	/* Использую текст в качестве маски для фона */
+	/* Это позволит отобразить градиент в виде цвета текста, а не фона background'а */
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	-moz-background-clip: text;
+	-moz-text-fill-color: transparent;
+}
+
+.Webname > h6 {
+	font-size: 0.85rem;
+}
