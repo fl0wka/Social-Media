@@ -8,8 +8,8 @@ const Auth = () => {
 	return (
 		<div className="Auth">
 			<AuthWebName />
-			<SignUp />
-			{/* <SignIn /> */}
+			{/* <SignUp /> */}
+			<SignIn />
 		</div>
 	)
 }

@@ -5,8 +5,12 @@ import Noti from "../../img/noti.png"
 import Comment from "../../img/comment.png"
 import { UilSetting } from "@iconscout/react-unicons"
 import TrendCard from "../TrendCard/TrendCard"
+import { useDisclosure } from "@mantine/hooks"
+import ShareModal from "../ShareModal/ShareModal"
 
 const RightSide = () => {
+	const [opened, { open, close }] = useDisclosure(false)
+
 	return (
 		<div className="RightSide">
 			<div className="navIcons">
@@ -18,7 +22,10 @@ const RightSide = () => {
 
 			<TrendCard />
 
-			<button className="button r-button">Share</button>
+			<button className="button r-button" onClick={open}>
+				Share
+			</button>
+			<ShareModal opened={opened} close={close} />
 		</div>
 	)
 }

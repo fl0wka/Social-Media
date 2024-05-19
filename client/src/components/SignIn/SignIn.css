@@ -18,6 +18,7 @@
 .infoForm > div {
 	display: flex;
 	gap: 1rem;
+	margin: 0.5rem;
 	height: 2rem;
 	width: 90%;
 }
