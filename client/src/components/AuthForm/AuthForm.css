@@ -40,3 +40,10 @@
 	align-items: center;
 	justify-content: center;
 }
+
+.confirmPassError {
+	color: red;
+	font-size: 12px;
+	align-self: flex-end;
+	margin-right: 5px;
+}
