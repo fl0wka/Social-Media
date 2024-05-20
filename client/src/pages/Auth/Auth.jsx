@@ -2,6 +2,8 @@ import React, { useState } from "react"
 import "./Auth.css"
 import AuthWebName from "../../components/AuthWebName/AuthWebName"
 import AuthForm from "../../components/AuthForm/AuthForm"
+import { useDispatch } from "react-redux"
+import { logIn, signUp } from "../../actions/AuthAction"
 
 const Auth = () => {
 	const initialState = {
@@ -12,6 +14,7 @@ const Auth = () => {
 		confirmpass: "",
 	}
 	const [isSignUp, setIsSignUp] = useState(false)
+	const dispatch = useDispatch()
 	const [data, setData] = useState(initialState)
 
 	const handleChange = e => {
@@ -23,9 +26,14 @@ const Auth = () => {
 
 		// Делаем проверку совпадения введенных значений полей "password" и "confirmpass"
 		if (isSignUp) {
-			if (data.password !== data.confirmpass) {
-				setIsConfirmPass(false)
-			}
+			// if (data.password !== data.confirmpass) {
+			// 	setIsConfirmPass(false)
+			// }
+			data.password === data.confirmpass
+				? dispatch(signUp(data))
+				: setIsConfirmPass(false)
+		} else {
+			dispatch(logIn(data))
 		}
 	}
 	const resetForm = () => {
