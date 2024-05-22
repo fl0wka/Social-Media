@@ -5,6 +5,7 @@ const AuthForm = ({
 	data,
 	isSignUp,
 	isConfirmPass,
+	loadingStatus,
 	setIsSignUp,
 	onChange,
 	onSubmit,
@@ -95,7 +96,7 @@ const AuthForm = ({
 							: "Don't have an account. Sign up"}
 					</span>
 					<button className="button infoButton" type="sumbit">
-						{isSignUp ? "Sign up" : "Log In"}
+						{loadingStatus ? "...Loading" : isSignUp ? "Sign up" : "Log In"}
 					</button>
 				</div>
 			</form>
