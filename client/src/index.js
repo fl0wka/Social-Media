@@ -4,7 +4,7 @@ import App from "./App"
 import "@mantine/core/styles.css"
 import { MantineProvider } from "@mantine/core"
 import { Provider } from "react-redux"
-import store from "./store/ReduxStore"
+import store from "./store/createStore"
 
 const root = ReactDOM.createRoot(document.getElementById("root"))
 root.render(

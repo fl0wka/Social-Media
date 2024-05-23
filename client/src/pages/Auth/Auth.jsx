@@ -3,7 +3,7 @@ import "./Auth.css"
 import AuthWebName from "../../components/AuthWebName/AuthWebName"
 import AuthForm from "../../components/AuthForm/AuthForm"
 import { useDispatch, useSelector } from "react-redux"
-import { logIn, signUp } from "../../actions/AuthAction"
+import { getLoadingStatus, logIn, signUp } from "../../store/authReducer"
 
 const Auth = () => {
 	const initialState = {
@@ -15,7 +15,7 @@ const Auth = () => {
 	}
 	const [isSignUp, setIsSignUp] = useState(false)
 	const dispatch = useDispatch()
-	const loadingStatus = useSelector(state => state.authReducer.loading)
+	const loadingStatus = useSelector(getLoadingStatus())
 	const [data, setData] = useState(initialState)
 
 	const handleChange = e => {

@@ -1,10 +1,6 @@
-import {
-	legacy_createStore as createStore,
-	applyMiddleware,
-	compose,
-} from "redux"
-import { thunk } from "redux-thunk"
-import { reducers } from "../reducers"
+import { configureStore } from "@reduxjs/toolkit"
+import { combineReducers } from "redux"
+import authReducer from "./authReducer"
 
 function saveToLocalStorage(store) {
 	try {
@@ -26,14 +22,14 @@ function loadFromLocalStorage() {
 	}
 }
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 const persistedState = loadFromLocalStorage()
 
-const store = createStore(
-	reducers,
-	persistedState,
-	composeEnhancers(applyMiddleware(thunk))
-)
+const rootReducer = combineReducers({ auth: authReducer })
+
+const store = configureStore({
+	reducer: rootReducer,
+	preloadedState: persistedState,
+})
 
 store.subscribe(() => saveToLocalStorage(store.getState()))
 
