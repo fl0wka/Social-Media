@@ -3,23 +3,22 @@ import bcrypt, { compare } from "bcrypt"
 
 // Registering a new User
 export const registerUser = async (req, res) => {
-	const { username, password, firstname, lastname } = req.body
-
 	// Количество хэширования, количество изменений в строке
 	const salt = await bcrypt.genSalt(10)
-	// Хэшируем пароль
-	const hashedPass = await bcrypt.hash(password, salt)
-
-	const newUser = new UserModel({
-		username,
-		password: hashedPass,
-		firstname,
-		lastname,
-	})
+	// Хэшируем пароль и записываем в поле password
+	const hashedPass = await bcrypt.hash(req.body.password, salt)
+	req.body.password = hashedPass
+	const newUser = new UserModel(req.body)
+	const username = req.body.username
 
 	// Обращение к серверу делаем через try/catch
 	// Сохраним пользователя в БД
 	try {
+		const oldUser = await UserModel.findOne({ username })
+		// Проверка на существование пользователя
+		if (oldUser) {
+			return res.status(404).json({ message: "username is already registered" })
+		}
 		await newUser.save()
 		// Возвращаем статус 200 и само значение в формате json при удачном исполнении
 		res.status(200).json(newUser)
@@ -42,7 +41,7 @@ export const loginUser = async (req, res) => {
 
 			validity
 				? res.status(200).json(user)
-				: res.status(400).json("Wrong password")
+				: res.status(400).json({ message: "Wrong password" })
 		} else {
 			res.status(404).json("User does not exist")
 		}

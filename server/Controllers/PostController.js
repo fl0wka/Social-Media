@@ -24,7 +24,7 @@ export const getPost = async (req, res) => {
 		if (post) {
 			res.status(200).json(post)
 		} else {
-			res.status(404).json("Post not found")
+			res.status(404).json({ message: "Post not found" })
 		}
 	} catch (error) {
 		res.status(500).json({ message: error.message })
@@ -44,7 +44,7 @@ export const updatePost = async (req, res) => {
 			await post.updateOne({ $set: req.body })
 			res.status(200).json("Post updated")
 		} else {
-			res.status(403).json("Action forbidden")
+			res.status(403).json({ message: "Action forbidden" })
 		}
 	} catch (error) {
 		res.status(500).json({ message: error.message })
@@ -63,7 +63,7 @@ export const deletePost = async (req, res) => {
 			await post.deleteOne()
 			res.status(200).json("Post deleted successfully")
 		} else {
-			res.status(403).json("Action forbidden")
+			res.status(403).json({ message: "Action forbidden" })
 		}
 	} catch (error) {
 		res.status(500).json({ message: error.message })

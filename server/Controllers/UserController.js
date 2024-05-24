@@ -17,7 +17,7 @@ export const getUser = async (req, res) => {
 
 			res.status(200).json(otherDetails)
 		} else {
-			res.status(404).json("not such user exist")
+			res.status(404).json({ message: "not such user exist" })
 		}
 	} catch (error) {
 		res.status(500).json({ message: error.message })
@@ -49,7 +49,9 @@ export const updateUser = async (req, res) => {
 			res.status(500).json({ message: error.message })
 		}
 	} else {
-		res.status(403).json("Access Denied! You can only update your own profile")
+		res
+			.status(403)
+			.json({ message: "Access Denied! You can only update your own profile" })
 	}
 }
 
@@ -67,7 +69,9 @@ export const deleteUser = async (req, res) => {
 			res.status(500).json({ message: error.message })
 		}
 	} else {
-		res.status(403).json("Access Denied! You can only deleted your own profile")
+		res
+			.status(403)
+			.json({ message: "Access Denied! You can only deleted your own profile" })
 	}
 }
 
@@ -79,7 +83,7 @@ export const followUser = async (req, res) => {
 
 	// Проверка того, что пользователь не подписывается сам на себя
 	if (currentUserId === id) {
-		res.status(403).json("Action forbidden")
+		res.status(403).json({ message: "Action forbidden" })
 	}
 
 	try {
@@ -97,7 +101,7 @@ export const followUser = async (req, res) => {
 			await followingUser.updateOne({ $push: { following: id } })
 			res.status(200).json("User followed")
 		} else {
-			res.status(403).json("User is already followed by you")
+			res.status(403).json({ message: "User is already followed by you" })
 		}
 	} catch (error) {
 		res.status(500).json({ message: error.message })
@@ -112,7 +116,7 @@ export const unFollowUser = async (req, res) => {
 
 	// Проверка того, что пользователь не пытается отписываться сам от себя
 	if (currentUserId === id) {
-		res.status(403).json("Action forbidden")
+		res.status(403).json({ message: "Action forbidden" })
 	}
 
 	try {
@@ -130,7 +134,7 @@ export const unFollowUser = async (req, res) => {
 			await followingUser.updateOne({ $pull: { following: id } })
 			res.status(200).json("User unfollowed")
 		} else {
-			res.status(403).json("User is not followed by you")
+			res.status(403).json({ message: "User is not followed by you" })
 		}
 	} catch (error) {
 		res.status(500).json({ message: error.message })

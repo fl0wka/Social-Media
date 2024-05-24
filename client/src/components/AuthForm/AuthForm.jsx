@@ -95,7 +95,11 @@ const AuthForm = ({
 							? "Already have an account. Login!"
 							: "Don't have an account. Sign up"}
 					</span>
-					<button className="button infoButton" type="sumbit">
+					<button
+						className="button infoButton"
+						type="sumbit"
+						disabled={loadingStatus}
+					>
 						{loadingStatus ? "...Loading" : isSignUp ? "Sign up" : "Log In"}
 					</button>
 				</div>
