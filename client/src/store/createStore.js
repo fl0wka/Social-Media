@@ -1,36 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit"
-import { combineReducers } from "redux"
-import authReducer from "./authReducer"
+import { rootReducer } from "."
+import * as localStorage from "../utils/localStorage"
 
-function saveToLocalStorage(store) {
-	try {
-		const serializedStore = JSON.stringify(store)
-		window.localStorage.setItem("store", serializedStore)
-	} catch (error) {
-		console.log(error)
-	}
-}
-
-function loadFromLocalStorage() {
-	try {
-		const serializedStore = window.localStorage.getItem("store")
-		if (serializedStore === null) return undefined
-		return JSON.parse(serializedStore)
-	} catch (error) {
-		console.log(error)
-		return undefined
-	}
-}
-
-const persistedState = loadFromLocalStorage()
-
-const rootReducer = combineReducers({ auth: authReducer })
+const persistedState = localStorage.load("store")
 
 const store = configureStore({
 	reducer: rootReducer,
 	preloadedState: persistedState,
 })
 
-store.subscribe(() => saveToLocalStorage(store.getState()))
+store.subscribe(() => localStorage.save(store.getState(), "store"))
 
 export default store

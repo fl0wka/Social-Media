@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit"
 import * as AuthApi from "../api/AuthRequest"
+import * as localStorage from "../utils/localStorage"
 
 const initialState = { authData: null, loading: false, error: false }
 
@@ -15,6 +16,7 @@ export const authSlice = createSlice({
 			state.authData = action.payload
 			state.loading = false
 			state.error = false
+			localStorage.save({ ...action?.payload }, "profile")
 		},
 		authRequestFailed: state => {
 			state.loading = false
@@ -30,8 +32,6 @@ export const logIn = formData => async dispatch => {
 	dispatch(authRequested())
 	try {
 		const { data } = await AuthApi.logIn(formData)
-		// Записываем данные в localStorage
-		localStorage.setItem("profile", JSON.stringify({ ...data }))
 		dispatch(authReceived(data))
 	} catch (error) {
 		dispatch(authRequestFailed())
@@ -42,7 +42,6 @@ export const signUp = formData => async dispatch => {
 	dispatch(authRequested())
 	try {
 		const { data } = await AuthApi.signUp(formData)
-		localStorage.setItem("profile", JSON.stringify({ ...data }))
 		dispatch(authReceived(data))
 	} catch (error) {
 		dispatch(authRequestFailed())
