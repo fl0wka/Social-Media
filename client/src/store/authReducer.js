@@ -49,5 +49,6 @@ export const signUp = formData => async dispatch => {
 }
 
 export const getLoadingStatus = () => state => state.auth.loading
+export const getUser = () => state => state.auth.authData
 
 export default authReducer
