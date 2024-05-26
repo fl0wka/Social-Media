@@ -1,5 +1,6 @@
-import React, { useEffect, useRef, useState } from "react"
+import React, { useRef, useState } from "react"
 import ProfileImage from "../../img/profileImg.jpg"
+import "./PostShare.css"
 import {
 	UilScenery,
 	UilPlayCircle,
@@ -7,26 +8,69 @@ import {
 	UilLocationPoint,
 	UilTimes,
 } from "@iconscout/react-unicons"
-import "./PostShare.css"
+import { useDispatch, useSelector } from "react-redux"
+import { getUser } from "../../store/authReducer"
+import { uploadImage } from "../../store/uploadAction"
+import { getUploadStatus, uploadPost } from "../../store/postReducer"
 
 const PostShare = () => {
+	const loading = useSelector(getUploadStatus())
+	const dispatch = useDispatch()
 	const [image, setImage] = useState(null)
 	const imageRef = useRef()
+	const desc = useRef()
+	const { user } = useSelector(getUser())
+
+	const reset = () => {
+		setImage(null)
+		desc.current.value = ""
+	}
 
 	const onImageChange = event => {
 		if (event.target.files && event.target.files[0]) {
 			let img = event.target.files[0]
-			setImage({
-				image: URL.createObjectURL(img),
-			})
+			setImage(img)
 		}
+	}
+
+	const handleSubmit = e => {
+		e.preventDefault()
+
+		const newPost = {
+			userId: user._id,
+			desc: desc.current.value,
+		}
+
+		if (image) {
+			const data = new FormData()
+			// Конкатенация "даты + название" дает нам уникальное имя изображения
+			const fileName = Date.now() + image.name
+			data.append("name", fileName)
+			data.append("file", image)
+			// Отправлять в поле image на сервер будем название картинки, а не ссылку
+			newPost.image = fileName
+			// Далее отправляем данные на сервер
+			try {
+				dispatch(uploadImage(data))
+			} catch (error) {
+				console.log(error)
+			}
+		}
+		dispatch(uploadPost(newPost))
+		reset()
 	}
 
 	return (
 		<div className="PostShare">
 			<img src={ProfileImage} alt="img" />
 			<div>
-				<input type="text" placeholder="What's happening" />
+				<input
+					type="text"
+					placeholder="What's happening"
+					ref={desc}
+					// Указываем, что это обязательное поле. Если его не заполнить, то вернется пустая строка ""
+					required
+				/>
 				<div className="postOptions">
 					<div
 						className="option"
@@ -48,7 +92,13 @@ const PostShare = () => {
 						<UilSchedule />
 						Shedule
 					</div>
-					<button className="button ps-button">Share</button>
+					<button
+						className="button ps-button"
+						onClick={handleSubmit}
+						disabled={loading}
+					>
+						{loading ? "Uploading..." : "Share"}
+					</button>
 					<div style={{ display: "none" }}>
 						<input
 							type="file"
@@ -61,7 +111,7 @@ const PostShare = () => {
 				{image && (
 					<div className="previewImage">
 						<UilTimes onClick={() => setImage(null)} />
-						<img src={image.image} alt="myImg" />
+						<img src={URL.createObjectURL(image)} alt="myImg" />
 					</div>
 				)}
 			</div>
