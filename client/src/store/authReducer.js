@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit"
-import * as AuthApi from "../api/AuthRequest"
-import * as localStorage from "../utils/localStorage"
+import authService from "../services/auth.service"
+import localStorage from "../utils/localStorage"
 
 const initialState = { authData: null, loading: false, error: false }
 
@@ -31,7 +31,7 @@ const { authRequested, authReceived, authRequestFailed } = actions
 export const logIn = formData => async dispatch => {
 	dispatch(authRequested())
 	try {
-		const { data } = await AuthApi.logIn(formData)
+		const data = await authService.login(formData)
 		dispatch(authReceived(data))
 	} catch (error) {
 		dispatch(authRequestFailed())
@@ -41,7 +41,7 @@ export const logIn = formData => async dispatch => {
 export const signUp = formData => async dispatch => {
 	dispatch(authRequested())
 	try {
-		const { data } = await AuthApi.signUp(formData)
+		const data = await authService.register(formData)
 		dispatch(authReceived(data))
 	} catch (error) {
 		dispatch(authRequestFailed())

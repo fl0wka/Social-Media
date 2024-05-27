@@ -1,8 +1,8 @@
-import * as UploadApi from "../api/UploadRequest"
+import uploadService from "../services/upload.service"
 
 export const uploadImage = data => async dispatch => {
 	try {
-		await UploadApi.uploadImage(data)
+		await uploadService.image(data)
 	} catch (error) {
 		console.log(error.message)
 	}
