@@ -10,6 +10,9 @@ const postService = {
 		const { data } = await httpPost.get(`${userId}/timeline`)
 		return data
 	},
+	likePost: async (postId, userId) => {
+		return await httpPost.put(`${postId}/like`, { userId: userId })
+	},
 }
 
 export default postService
