@@ -5,7 +5,7 @@ import { useRoutes } from "react-router-dom"
 import { getUser } from "./store/authReducer"
 
 function App() {
-	const user = useSelector(getUser())
+	const { user } = useSelector(getUser())
 	const element = useRoutes(routes(user))
 
 	return (

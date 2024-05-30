@@ -13,5 +13,9 @@ export const routes = user => [
 		element: user ? <Home /> : <Navigate to="../auth" />,
 	},
 	{ path: "auth", element: user ? <Navigate to="../home" /> : <Auth /> },
+	{
+		path: `profile/:id`,
+		element: user ? <Profile /> : <Navigate to="../auth" />,
+	},
 	{ path: "*", element: <Navigate to="" /> },
 ]

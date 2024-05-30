@@ -20,6 +20,7 @@ const PostShare = () => {
 	const imageRef = useRef()
 	const desc = useRef()
 	const { user } = useSelector(getUser())
+	const serverPublic = process.env.REACT_APP_PUBLIC_FOLDER
 
 	const reset = () => {
 		setImage(null)
@@ -62,7 +63,14 @@ const PostShare = () => {
 
 	return (
 		<div className="PostShare">
-			<img src={ProfileImage} alt="img" />
+			<img
+				src={
+					user.profilePicture
+						? serverPublic + user.profilePicture
+						: serverPublic + "defaultProfile.jpg"
+				}
+				alt=""
+			/>
 			<div>
 				<input
 					type="text"
