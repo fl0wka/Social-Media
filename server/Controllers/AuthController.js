@@ -1,5 +1,5 @@
 import UserModel from "../Models/userModel.js"
-import bcrypt, { compare } from "bcrypt"
+import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 
 const createToken = (username, id) => {

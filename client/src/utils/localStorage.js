@@ -1,4 +1,4 @@
-const localStorage = {
+const customLocalStorage = {
 	save: (data, itemName) => {
 		try {
 			const serializedData = JSON.stringify(data)
@@ -20,4 +20,4 @@ const localStorage = {
 	},
 }
 
-export default localStorage
+export default customLocalStorage

@@ -1,14 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit"
 import { rootReducer } from "."
-import localStorage from "../utils/localStorage"
+import customLocalStorage from "../utils/localStorage"
 
-const persistedState = localStorage.load("store")
+const persistedState = customLocalStorage.load("store")
 
 const store = configureStore({
 	reducer: rootReducer,
 	preloadedState: persistedState,
 })
 
-store.subscribe(() => localStorage.save(store.getState(), "store"))
+store.subscribe(() => customLocalStorage.save(store.getState(), "store"))
 
 export default store

@@ -1,5 +1,6 @@
 import UserModel from "../Models/userModel.js"
 import bcrypt from "bcrypt"
+import jwt from "jsonwebtoken"
 
 // Get a User
 export const getUser = async (req, res) => {
@@ -30,9 +31,9 @@ export const updateUser = async (req, res) => {
 	// currentUserId - сценарий, когда пользователь обновляет свой профиль
 	// currentUserAdminStatus - сценарий, когда админ обновляет пользователя
 	// в тестовых запросах Postman в "body" нужно передавать не только ключ/значение, которое будет изменено, но "currentUserId" и "currentUserAdminStatus"
-	const { currentUserId, currentUserAdminStatus, password } = req.body
+	const { _id, currentUserAdminStatus, password } = req.body
 
-	if (currentUserId === id || currentUserAdminStatus) {
+	if (_id === id) {
 		try {
 			if (password) {
 				// Прежде чем изменить пароль, хэшируем новое значение и записываем его
@@ -43,8 +44,14 @@ export const updateUser = async (req, res) => {
 			const user = await UserModel.findByIdAndUpdate(id, req.body, {
 				new: true,
 			})
+			// Обновляем токен
+			const token = jwt.sign(
+				{ username: user.username, id: user._id },
+				process.env.JWT_KEY,
+				{ expiresIn: "1h" }
+			)
 
-			res.status(200).json(user)
+			res.status(200).json({ user, token })
 		} catch (error) {
 			res.status(500).json({ message: error.message })
 		}

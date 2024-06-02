@@ -1,8 +1,12 @@
 import React from "react"
 import { Modal } from "@mantine/core"
 import ProfileModalForm from "../ProfileModalForm/ProfileModalForm"
+import { useSelector } from "react-redux"
+import { getUser } from "../../store/authReducer"
 
 const ProfileModal = ({ opened, close }) => {
+	const { user } = useSelector(getUser())
+
 	return (
 		<>
 			<Modal
@@ -14,7 +18,7 @@ const ProfileModal = ({ opened, close }) => {
 				}}
 				size="55%"
 			>
-				<ProfileModalForm />
+				<ProfileModalForm data={user} close={close} />
 			</Modal>
 		</>
 	)

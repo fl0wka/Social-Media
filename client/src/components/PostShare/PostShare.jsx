@@ -1,5 +1,4 @@
 import React, { useRef, useState } from "react"
-import ProfileImage from "../../img/profileImg.jpg"
 import "./PostShare.css"
 import {
 	UilScenery,
@@ -119,7 +118,7 @@ const PostShare = () => {
 				{image && (
 					<div className="previewImage">
 						<UilTimes onClick={() => setImage(null)} />
-						<img src={URL.createObjectURL(image)} alt="myImg" />
+						<img src={URL.createObjectURL(image)} alt="" />
 					</div>
 				)}
 			</div>
