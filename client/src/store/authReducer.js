@@ -47,6 +47,15 @@ export const authSlice = createSlice({
 			state.loading = false
 			state.error = false
 		},
+		followUserSuccess: (state, action) => {
+			state.authData.user.following.push(action.payload)
+		},
+		unFollowUserSuccess: (state, action) => {
+			const updateFollowing = state.authData.user.following.filter(
+				item => item !== action.payload
+			)
+			state.authData.user.following = [...updateFollowing]
+		},
 	},
 })
 
@@ -59,7 +68,14 @@ const {
 	updatedUserSuccess,
 	updateUserFailed,
 	loggedOut,
+	followUserSuccess,
+	unFollowUserSuccess,
 } = actions
+
+const followUserRequested = createAction("followUserRequested")
+const followUserFailed = createAction("followUserFailed")
+const unFollowUserRequested = createAction("unFollowUserRequested")
+const unFollowUserFailed = createAction("unFollowUserFailed")
 
 export const logIn = formData => async dispatch => {
 	dispatch(authRequested())
@@ -67,7 +83,7 @@ export const logIn = formData => async dispatch => {
 		const data = await authService.login(formData)
 		dispatch(authReceived(data))
 	} catch (error) {
-		dispatch(authRequestFailed())
+		dispatch(authRequestFailed(error))
 	}
 }
 
@@ -93,6 +109,26 @@ export const updateUser = (id, formData) => async dispatch => {
 		dispatch(updatedUserSuccess(data))
 	} catch (error) {
 		dispatch(updateUserFailed())
+	}
+}
+
+export const followUser = (id, currentUser) => async dispatch => {
+	dispatch(followUserRequested())
+	try {
+		await userService.follow(id, currentUser)
+		dispatch(followUserSuccess(id))
+	} catch (error) {
+		dispatch(followUserFailed())
+	}
+}
+
+export const unFollowUser = (id, currentUser) => async dispatch => {
+	dispatch(unFollowUserRequested())
+	try {
+		await userService.unFollow(id, currentUser)
+		dispatch(unFollowUserSuccess(id))
+	} catch (error) {
+		dispatch(unFollowUserFailed())
 	}
 }
 

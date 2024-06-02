@@ -2,6 +2,23 @@ import UserModel from "../Models/userModel.js"
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 
+// Get all Users
+export const getAllUsers = async (req, res) => {
+	try {
+		let users = await UserModel.find()
+		users = users.map(user => {
+			// исключаем из ответа password
+			// в полученном объекте user, искомые данные находятся в ключе _doc
+			const { password, ...otherDetails } = user._doc
+			return otherDetails
+		})
+
+		res.status(200).json(users)
+	} catch (error) {
+		res.status(500).json({ message: error.message })
+	}
+}
+
 // Get a User
 export const getUser = async (req, res) => {
 	// вытащим значение id из params
@@ -86,24 +103,24 @@ export const deleteUser = async (req, res) => {
 export const followUser = async (req, res) => {
 	const id = req.params.id
 
-	const { currentUserId } = req.body
+	const { _id } = req.body
 
 	// Проверка того, что пользователь не подписывается сам на себя
-	if (currentUserId === id) {
+	if (_id === id) {
 		res.status(403).json({ message: "Action forbidden" })
 	}
 
 	try {
 		// User на которого подписываемся
 		const followUser = await UserModel.findById(id)
-		// User который подписан на тебя
-		const followingUser = await UserModel.findById(currentUserId)
+		// User который подписывается
+		const followingUser = await UserModel.findById(_id)
 
 		// Проверка существования нашей подписки на этого User'а в его массиве подписавшихся
-		if (!followUser.followers.includes(currentUserId)) {
+		if (!followUser.followers.includes(_id)) {
 			// Добавление в массив MongoDB осуществляется методом $push
 			// Добавление id текущего User'а в массив того, на кого подписываешься
-			await followUser.updateOne({ $push: { followers: currentUserId } })
+			await followUser.updateOne({ $push: { followers: _id } })
 			// Добавление к себе в массив id user'а, на которого подписываешься
 			await followingUser.updateOne({ $push: { following: id } })
 			res.status(200).json("User followed")
@@ -119,24 +136,24 @@ export const followUser = async (req, res) => {
 export const unFollowUser = async (req, res) => {
 	const id = req.params.id
 
-	const { currentUserId } = req.body
+	const { _id } = req.body
 
 	// Проверка того, что пользователь не пытается отписываться сам от себя
-	if (currentUserId === id) {
+	if (_id === id) {
 		res.status(403).json({ message: "Action forbidden" })
 	}
 
 	try {
 		// User на которого подписались
 		const followUser = await UserModel.findById(id)
-		// User который подписан на тебя
-		const followingUser = await UserModel.findById(currentUserId)
+		// User который подписался
+		const followingUser = await UserModel.findById(_id)
 
 		// Проверка существования нашей подписки на этого User'а в его массиве подписавшихся
-		if (followUser.followers.includes(currentUserId)) {
+		if (followUser.followers.includes(_id)) {
 			// Удаление из массив MongoDB осуществляется методом $pull
 			// Удаление id текущего User'а из массив того, на кого подписались
-			await followUser.updateOne({ $pull: { followers: currentUserId } })
+			await followUser.updateOne({ $pull: { followers: _id } })
 			// Удаление из своего массива id user'а, на которого подписались
 			await followingUser.updateOne({ $pull: { following: id } })
 			res.status(200).json("User unfollowed")

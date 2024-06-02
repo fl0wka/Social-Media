@@ -10,7 +10,6 @@ import userService from "../../services/user.service"
 
 const InfoCard = () => {
 	const [opened, { open, close }] = useDisclosure(false)
-	const redirectUrl = "/auth"
 
 	const dispatch = useDispatch()
 	const params = useParams()
@@ -53,35 +52,25 @@ const InfoCard = () => {
 				<span>
 					<b>Status </b>
 				</span>
-				<span>
-					{profileUser.relationship
-						? profileUser.relationship
-						: "not specified"}
-				</span>
+				<span>{profileUser.relationship ? profileUser.relationship : ""}</span>
 			</div>
 			<div className="info">
 				<span>
 					<b>Lives in </b>
 				</span>
-				<span>
-					{profileUser.livesIn ? profileUser.livesIn : "not specified"}
-				</span>
+				<span>{profileUser.livesIn ? profileUser.livesIn : ""}</span>
 			</div>
 			<div className="info">
 				<span>
 					<b>Country </b>
 				</span>
-				<span>
-					{profileUser.country ? profileUser.country : "not specified"}
-				</span>
+				<span>{profileUser.country ? profileUser.country : ""}</span>
 			</div>
 			<div className="info">
 				<span>
 					<b>Works at </b>
 				</span>
-				<span>
-					{profileUser.worksAt ? profileUser.worksAt : "not specified"}
-				</span>
+				<span>{profileUser.worksAt ? profileUser.worksAt : ""}</span>
 			</div>
 			<button className="button logout-button" onClick={handleLogOut}>
 				Logout

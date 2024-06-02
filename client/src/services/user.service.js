@@ -14,6 +14,18 @@ const userService = {
 		const { data } = await httpUser.put(`${userId}`, payload)
 		return data
 	},
+	getAll: async () => {
+		const { data } = await httpUser.get()
+		return data
+	},
+	follow: async (id, currentUser) => {
+		const { data } = await httpUser.put(`${id}/follow`, currentUser)
+		return data
+	},
+	unFollow: async (id, currentUser) => {
+		const { data } = await httpUser.put(`${id}/unfollow`, currentUser)
+		return data
+	},
 }
 
 export default userService
