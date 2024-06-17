@@ -5,10 +5,13 @@ import { useSelector } from "react-redux"
 import { getUser } from "../../store/authReducer"
 import chatService from "../../services/chat.service"
 import Conversation from "../../components/Conversation/Conversation"
+import Navigation from "../../components/Navigation/Navigation"
+import ChatBox from "../../components/ChatBox/ChatBox"
 
 const Chat = () => {
 	const { user } = useSelector(getUser())
 	const [chats, setChats] = useState([])
+	const [currentChat, setCurrentChat] = useState(null)
 
 	useEffect(() => {
 		const getChats = async () => {
@@ -32,7 +35,7 @@ const Chat = () => {
 					<h2>Chats</h2>
 					<div className="Chat-list">
 						{chats.map(chat => (
-							<div>
+							<div onClick={() => setCurrentChat(chat)}>
 								<Conversation data={chat} currentUserId={user._id} />
 							</div>
 						))}
@@ -41,7 +44,14 @@ const Chat = () => {
 			</div>
 
 			{/* Right side */}
-			<div className="Right-side-chat">Right Side</div>
+			<div className="Right-side-chat">
+				<div style={{ width: "20rem", alignSelf: "flex-end" }}>
+					<Navigation />
+				</div>
+
+				{/* Chat body */}
+				<ChatBox chat={currentChat} currentUserId={user._id} />
+			</div>
 		</div>
 	)
 }

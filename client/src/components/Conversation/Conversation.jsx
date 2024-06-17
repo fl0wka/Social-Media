@@ -18,7 +18,6 @@ const Conversation = ({ data, currentUserId }) => {
 		}
 		getUserData()
 	}, [])
-	console.log("userData: ", userData)
 
 	return (
 		<>
