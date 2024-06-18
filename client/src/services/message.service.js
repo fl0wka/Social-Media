@@ -10,6 +10,10 @@ const messageService = {
 		const { data } = await httpMessage.get(`${chatId}`)
 		return data
 	},
+	post: async message => {
+		const { data } = await httpMessage.post("/", message)
+		return data
+	},
 }
 
 export default messageService

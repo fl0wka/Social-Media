@@ -44,6 +44,24 @@ const ChatBox = ({ chat, currentUserId }) => {
 		setNewMessage(newMessage)
 	}
 
+	const handleSend = async e => {
+		e.preventDefault()
+		const message = {
+			senderId: currentUserId,
+			text: newMessage,
+			chatId: chat._id,
+		}
+
+		// Send message to database
+		try {
+			const data = await messageService.post(message)
+			setMessages([...messages, data])
+			setNewMessage("")
+		} catch (error) {
+			console.log(error)
+		}
+	}
+
 	return (
 		<>
 			<div className="ChatBox-container">
@@ -96,7 +114,9 @@ const ChatBox = ({ chat, currentUserId }) => {
 						<div className="chat-sender">
 							<div>+</div>
 							<InputEmoji value={newMessage} onChange={handleChange} />
-							<div className="send-button button">Send</div>
+							<div className="send-button button" onClick={handleSend}>
+								Send
+							</div>
 						</div>
 					</>
 				) : (
