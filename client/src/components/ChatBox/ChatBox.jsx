@@ -1,14 +1,21 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import userService from "../../services/user.service"
 import messageService from "../../services/message.service"
 import { format } from "timeago.js"
 import InputEmoji from "react-input-emoji"
 import "./ChatBox.css"
 
-const ChatBox = ({ chat, currentUserId }) => {
+const ChatBox = ({ chat, currentUserId, setSendMessage, receiveMessage }) => {
 	const [userData, setUserData] = useState(null)
 	const [messages, setMessages] = useState([])
 	const [newMessage, setNewMessage] = useState("")
+	const scroll = useRef()
+
+	useEffect(() => {
+		if (receiveMessage !== null && receiveMessage?.chatId === chat?._id) {
+			setMessages([...messages, receiveMessage])
+		}
+	}, [receiveMessage])
 
 	// Fetching data for header
 	useEffect(() => {
@@ -60,7 +67,15 @@ const ChatBox = ({ chat, currentUserId }) => {
 		} catch (error) {
 			console.log(error)
 		}
+		// Send message to socket.io
+		const receiverId = chat.members.find(id => id !== currentUserId)
+		setSendMessage({ ...message, receiverId })
 	}
+
+	// Always scroll to last message
+	useEffect(() => {
+		scroll.current?.scrollIntoView({ behavior: "smooth" })
+	}, [messages])
 
 	return (
 		<>
@@ -97,6 +112,7 @@ const ChatBox = ({ chat, currentUserId }) => {
 							{messages.map(message => (
 								<>
 									<div
+										ref={scroll}
 										className={
 											message.senderId === currentUserId
 												? "message own"
