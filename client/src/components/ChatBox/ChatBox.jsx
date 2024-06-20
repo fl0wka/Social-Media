@@ -74,7 +74,7 @@ const ChatBox = ({ chat, currentUserId, setSendMessage, receiveMessage }) => {
 
 	// Always scroll to last message
 	useEffect(() => {
-		scroll.current?.scrollIntoView({ behavior: "smooth" })
+		scroll.current?.scrollIntoView({ behavior: "instant" })
 	}, [messages])
 
 	return (

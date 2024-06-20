@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import userService from "../../services/user.service"
 
-const Conversation = ({ data, currentUserId }) => {
+const Conversation = ({ data, currentUserId, online }) => {
 	const [userData, setUserData] = useState(null)
 
 	useEffect(() => {
@@ -23,7 +23,7 @@ const Conversation = ({ data, currentUserId }) => {
 		<>
 			<div className="follower conversation">
 				<div>
-					<div className="online-dot"></div>
+					{online && <div className="online-dot"></div>}
 					<img
 						src={
 							userData?.profilePicture
@@ -38,7 +38,7 @@ const Conversation = ({ data, currentUserId }) => {
 						<span>
 							{userData?.firstname} {userData?.lastname}
 						</span>
-						<span>Online</span>
+						<span>{online ? "online" : "offline"}</span>
 					</div>
 				</div>
 			</div>
