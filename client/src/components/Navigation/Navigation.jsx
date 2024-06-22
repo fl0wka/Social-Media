@@ -1,23 +1,33 @@
 import React from "react"
 import "./Navigation.css"
-import { Link } from "react-router-dom"
 import Home from "../../img/home.png"
-import Noti from "../../img/noti.png"
+import HomeActive from "../../img/home_active.png"
 import Comment from "../../img/comment.png"
-import { UilSetting } from "@iconscout/react-unicons"
+import CommentActive from "../../img/comment_active.png"
+import NavButton from "../NavButton/NavButton"
 
 const Navigation = () => {
+	const navList = [
+		{
+			path: "/home",
+			img: Home,
+			activeImg: HomeActive,
+		},
+		{ path: "/chat", img: Comment, activeImg: CommentActive },
+	]
+
 	return (
 		<div className="navIcons">
-			<Link to={"../home"}>
-				<img src={Home} alt="" />
-			</Link>
-
-			<UilSetting />
-			<img src={Noti} alt="" />
-			<Link to="/chat">
-				<img src={Comment} alt="" />
-			</Link>
+			{navList.map(item => {
+				return (
+					<NavButton
+						path={item.path}
+						img={item.img}
+						activeImg={item.activeImg}
+						key={item.path}
+					/>
+				)
+			})}
 		</div>
 	)
 }
