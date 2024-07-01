@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import "./Posts.css"
 import { useDispatch, useSelector } from "react-redux"
 import Post from "../Post/Post"
@@ -18,6 +18,8 @@ const Posts = () => {
 	let posts = useSelector(getPosts())
 	const isExistPost = posts.length > 0
 
+	const [currentPostId, setCurrentPostId] = useState(null)
+
 	// При первой загрузке страницы подгружаем все посты данного пользователя и те, на кого он подписан
 	useEffect(() => {
 		dispatch(timelinePosts(user._id))
@@ -34,7 +36,15 @@ const Posts = () => {
 			{postsLoading
 				? "Loading..."
 				: posts.map((post, id) => {
-						return <Post data={post} id={id} key={id} />
+						return (
+							<Post
+								data={post}
+								id={id}
+								key={id}
+								currentPostId={currentPostId}
+								setCurrentPostId={setCurrentPostId}
+							/>
+						)
 				  })}
 		</div>
 	)

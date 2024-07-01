@@ -19,3 +19,21 @@
 	align-items: flex-start;
 	gap: 1.5rem;
 }
+
+.postComment {
+	display: flex;
+	gap: 1rem;
+}
+
+.postComment > input {
+	outline: none;
+	border-radius: 0.5rem;
+	border: none;
+	background: var(--inputColor);
+	padding: 10px;
+	flex: 1;
+}
+
+.hidden {
+	display: none;
+}
